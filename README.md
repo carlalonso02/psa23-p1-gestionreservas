@@ -1,8 +1,8 @@
 # psa23-p1-gestionreservas
 
-#Funcionamiento de la practica
+# Funcionamiento de la practica
 
-#Cuestiones
+# Cuestiones
 La programación orientada a objetos es un tipo de programación que usara clases.
 Una clase es una forma de agrupar datos y acceder a ellos de forma sencilla. Tambien puede verse como una plantilla que usamos para la creacion de nuevos datos.
 Una instancia es un objeto creado desde una clase.
