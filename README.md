@@ -10,9 +10,9 @@ Podremos usar funciones y metodos para trabajr con las instancias.
 
 Después, explique cómo se podría aplicar POO a esta práctica.
 
-La principal diferencia entre una función y un método es que la función trabaja con datos externos a ella, mientras que el metodo tan solo necesita los atributos, caracteristicas propias, de la clase en la que esta definida para trabajar correctamente.
+La principal diferencia entre una función y un método es que la función trabaja con datos externos a ella, mientras que el metodo tan solo necesita los atributos, caracteristicas propias, de la clase en la que esta definida para trabajar correctamente y ademas siempre estara dentro de la clase, definido junto a aella. Mientras que la funcion podra estar tanto dentro como fuera.
 
-Explique too lo que sepa acerca de los constructores (qué son, para qué sirven) en POO. 
+Un constructor es un método que sirve para inicializar los atributos de forma automatica. El cosntructor tiene la siguiente llamada: __init__(). 
 
 Razone si un constructor en Python puede no tener parámetros.
 Explique las diferencias entre una lista y un diccionario en Python. Indique cómo se utilizarían estas estructuras de datos para almacenar los datos de las reservas en esta práctica.
