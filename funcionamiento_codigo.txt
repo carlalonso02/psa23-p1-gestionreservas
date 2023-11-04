@@ -1,0 +1,7 @@
+
+Numero de pasajeros alojados en cada clase:
+Para realizar esta parte de la rpactica primero use la funcion 'data.shape' para contar el nuemro de filas de cada archivo csv, con el numero de filas tengo el numero de pasajeros que ocupa cada clase. 
+
+Numero de pasajeros que facturan su maleta:
+Creo una funcion que recorra la columna de facturacion de cada archivo y si se encuntra con que el dato empeiza por S, de 'si' lo contabilice. Añado el comando 'strip' para eleimiar los espacios en balnco por is hubiese alguno y 'lower' las letras las paso a minusculas.
+Luego creo otra funcion que sume las maeltas facturadas en cada clase y ya tengo el total
