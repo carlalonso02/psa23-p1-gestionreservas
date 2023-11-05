@@ -1,4 +1,7 @@
+Porcentaje del vuelo ocupado:
+Para ello calculo el numero de filas en cada archivo, las sumo y las divido entr 120, luego lo multiplico por 100 y tengo el porcentaje de ocupacion.
 
+Sabemos cuantos pasajeros hay por el numero de filas de los archivos, tambien sabemos que el avion tienen 120 asientos.
 Numero de pasajeros alojados en cada clase:
 Para realizar esta parte de la rpactica primero use la funcion 'data.shape' para contar el nuemro de filas de cada archivo csv, con el numero de filas tengo el numero de pasajeros que ocupa cada clase. 
 
