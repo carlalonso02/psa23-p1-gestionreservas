@@ -1,3 +1,12 @@
+Dibujito avion:
+Para comenzar creo una lista en la que introduzco todos los asientos del avion clasificados en letra y numero. 
+En esta lista asigno en el primer bucle for a cada fila un numero, y en el segundo el asiento con su letra. Con f''{fila}{sitio} creo lo que seria el numero de asiento, cada fila (numero) con su sitio (letra), de esta forma tengo todos los asientos del avion.
+
+La segunda lista contiene todos los asientos asignados, para ello use la funcion .tolist() que me convierte los datos de las columnas 'Asiento' de los dos csv en una lista unica.
+
+Hago un bucle que valla de 1 a 21,numero las filas y hago dos bucles mas,uno para el bloque 'ABC' y otro 'DEF. En estos bucles busco que si el asiento esta en la lista de asientos reservados escriba un R, y si no lo esta que ponga una L
+
+
 Porcentaje del vuelo ocupado:
 Para ello calculo el numero de filas en cada archivo, las sumo y las divido entr 120, luego lo multiplico por 100 y tengo el porcentaje de ocupacion.
 
