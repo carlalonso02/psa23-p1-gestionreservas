@@ -3,12 +3,31 @@ import csv
 
 dr= pd.read_csv('booked_regular.csv',skipinitialspace=True)
 db= pd.read_csv('booked_business.csv',skipinitialspace=True)
-
 print(db)
 print(dr)
-#para crear el dibujtio del avion
-print('       A B C      D E F  ')
+
+#Dibujito del avion
+sitios = [f"{fila}{sitio}" for fila in range(1, 21) for sitio in 'ABCDEF']
+asientos_reservados = db['Asiento'].tolist() + dr['Asiento'].tolist()
+print(' ')
+print('    A B C    D E F  ')
 print('==========================')
+for fila in range(1, 21):                        
+    print(f'{fila:02d}  ', end='')               
+    for sitio in 'ABC':                          
+        if f'{fila}{sitio}' in asientos_reservados:    
+            print('R', end=' ')                 
+        else:
+            print('L', end=' ')                 
+    print('   ', end='')
+    for sitio in 'DEF':                           
+        if f'{fila}{sitio}' in asientos_reservados:
+            print('R', end=' ')
+        else:
+            print('L', end=' ')
+    print()
+
+print(' ')
 
 #Pasajeros en cada clase
 filas_b=db.shape[0]
