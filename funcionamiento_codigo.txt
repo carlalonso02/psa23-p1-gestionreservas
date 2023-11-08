@@ -17,3 +17,8 @@ Para realizar esta parte de la rpactica primero use la funcion 'data.shape' para
 Numero de pasajeros que facturan su maleta:
 Creo una funcion que recorra la columna de facturacion de cada archivo y si se encuntra con que el dato empeiza por S, de 'si' lo contabilice. Añado el comando 'strip' para eleimiar los espacios en balnco por is hubiese alguno y 'lower' las letras las paso a minusculas.
 Luego creo otra funcion que sume las maeltas facturadas en cada clase y ya tengo el total
+
+Para las funciones del menu:
+
+- Añadir reserva: primero necesito saber si se tratara de un nuevo pasajero de business o turista. Para ello le doy a elegir entre dos opciones, en funcion de la que eliga, la informacion de la nueva reserva, que se pide a continuacion se añade al csv correspondiente. Tambien añadi un mensaje de confirmacion de que la reserva se añadio correctamente.
+- Eliminar reserva: repeti la estrcutra de que lo priemro que se haga sea elegir en que clase esta el pasajero y despues decidi que para eliminar la reserva, que seria equivalente a eliminar la fila del csv, se introduejses el dni asociado a esa reserva. 
