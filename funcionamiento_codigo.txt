@@ -19,6 +19,9 @@ Creo una funcion que recorra la columna de facturacion de cada archivo y si se e
 Luego creo otra funcion que sume las maeltas facturadas en cada clase y ya tengo el total
 
 Para las funciones del menu:
+- Informacion acerca de las reservas: en funcion de la clase elgida se muestra un csv u otro.
+- Informacion pasajeros:
 
 - Añadir reserva: primero necesito saber si se tratara de un nuevo pasajero de business o turista. Para ello le doy a elegir entre dos opciones, en funcion de la que eliga, la informacion de la nueva reserva, que se pide a continuacion se añade al csv correspondiente. Tambien añadi un mensaje de confirmacion de que la reserva se añadio correctamente.
+- Modificar reserva
 - Eliminar reserva: repeti la estrcutra de que lo priemro que se haga sea elegir en que clase esta el pasajero y despues decidi que para eliminar la reserva, que seria equivalente a eliminar la fila del csv, se introduejses el dni asociado a esa reserva. 
