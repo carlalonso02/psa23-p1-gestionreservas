@@ -81,7 +81,19 @@ def print_clases():
     print('Tipos de clases:')
     print('Clase 1: Business')
     print('Clase 2: Turista\n')
-    nuevo_pb=pb
+    
+def info_reservas(db,dr):
+    print_clases()
+    clase=input(str('Eliga una clase\n'))
+    print(F'Clase elgida: {clase}\n')
+    if clase=='1':
+        print('Información acerca de las reservas de clase business:\n')
+        print(db)
+    elif clase=='2':
+        print('Información acerca de las reservas de clase turista:\n')
+        print(dr)
+    else:
+        print('Selecciones una clase existente')
     
 def añadir_reserva(db,dr):
     print_clases()
@@ -106,14 +118,7 @@ def añadir_reserva(db,dr):
         nuevo_R.to_csv('booked_regular.csv', index=False)
         print('Reserva en clase turista agregada correctamente')
     else:
-        print('Introduzca una clase valida')
-    
-def info_reservas():
-    
-def info_pasajeros():
-    
-
-def modificar_reserva():
+        print('Selecciones una clase existente')
     
     
 def eliminar_reserva(db,dr):
@@ -130,19 +135,19 @@ def eliminar_reserva(db,dr):
         print(F'Reserva del pasajero con DNI: {condicion} ,eliminada correctamente\n')
 
     else:
-        print('Introduzca una clase valida')
+        print('Seleccione una clase existente')
     
 def menu_complex():
     print_menu()
     salir=False
     while not salir:
-        print_menu00()
+        print_menu()
         opcion=input('Introduce una opcion: \n')
         print(F'Opcion seleccionada:{opcion}\n')
         if opcion =="1":
-            info_reservas()
-        elif opcion =="2":
-            info_pasajeros()
+            info_reservas(db,dr)
+        elif opcion=='2':
+            #info pasajeros?
         elif opcion=="3":
             añadir_reserva(db,dr)
         elif opcion=="4":
@@ -153,4 +158,4 @@ def menu_complex():
             salir=True
         else:
             print('Introduzca una opcion valida')
-
+menu_complex()
