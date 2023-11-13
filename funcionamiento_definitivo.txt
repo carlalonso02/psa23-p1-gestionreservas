@@ -18,3 +18,10 @@ Para realizar esta parte de la practica volvi a usar '.shape' para contar el num
 Numero de pasajeros que facturan su maleta:
 Creo una funcion que recorra la columna de facturacion de dt y si se encuentra con que el dato empeiza por 'S', de 'si' lo contabilizo. Añado el comando 'strip' para eliminar los espacios en balnco por si hubiese alguno y 'lower' convierte todas las letras a minuscula.
 
+MENU
+He creado primero una serie de funciones que solo imprimiran en pantalla informacion, por ejemplo el menu, las opciones de ordenar la informacion de los pasajeros. (print_...)
+Despues cree otra serie de funciones que piden al usuario elegir entre varias opciones, por ejemplo clase business o regular, forma de ordenar, que opcion del menu ejecutar. (op_...)
+
+
+Para mostarra la informacion de las reservas cree una funcion (info_reservas) que llama a op_clases() y trabaja con el input de esta. Si se elige una clase u otra muestra en pantalla ese csv.
+
