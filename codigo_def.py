@@ -48,7 +48,7 @@ def  numero_fact(dt):
     facturacion=dt['Facturacion']
     contador=0
     for i in facturacion: 
-        if str(i).strip().startswith('s'): #.strip elimina espacios en blanco
+        if str(i).strip().startswith('S'): #.strip elimina espacios en blanco 
             contador+=1
     return print(contador,'Pasajeros facturan maletas')
 numero_fact(dt)
@@ -69,7 +69,7 @@ def print_orden():
     print('Opciones para ordenar la información:')
     print('1.Alfabeticamente segun el apellido')
     print('2.Por número de asiento')
-#Funcion que imprime preferecnias de asiento
+#Funcion que imprime preferencias de asiento
 def print_preferencias():
     print()
     print('Opciones de asiento:')
@@ -103,28 +103,33 @@ def op_orden():
             return orden
         else:
             print('Por favor, introduzca una opcion valida (1 o 2)')
-#Función que pide informacion al usuario para crear una nueva reserva
-#corregir que por ejemplo el dni y las clases me pide introducirla dos veces
-def user_info(dt):
-    print('Introduzca la información pedida en mayusculas')
-    dni=input("Por favor, introduzca su DNI: \n")
-    #Compruebo si el dni ya esta asociado a una reserva
-    while dni in dt['DNI'].values:
-        print('Este DNI ya esta en uso, por favor, introduzca un DNI válido')
-       
-    dni=input("Por favor, introduzca su DNI: \n")
-    nombre=input("Por favor, introduzca su nombre: \n")
-    apellidos = input("Por favor, introduzca sus apellidos:\n ")
-    edad = input("Por favor, introduzca su edad:\n ")
-    facturacion = input("¿Desea facturar maletas? (SI/NO): \n")
-    return dni, nombre, apellidos, edad, facturacion
 
 #Funcion que le pregunta al usuario que asiento prefiere
 def op_preferencia():
     print_preferencias()
     preferencia = input("Elija una opcion (1,2 o 3):\n")
     return preferencia
- 
+
+#Funcion para ordenar segun numero asientos
+def orden_num(numero):
+    numero=re.findall(r'\d+',numero)
+    return int(numero[0]if numero else 0) #convierte lo encontrado a un integer, si la cadena esta vacia devuleve un cero.
+
+#Función que pide informacion al usuario para crear una nueva reserva
+#corregir fallo
+def user_info(dt):
+    print('Introduzca la información pedida en mayusculas')
+    dni=input("Por favor, introduzca su DNI: \n")
+    #Compruebo si el dni ya esta asociado a una reserva
+    for dni in dt['DNI'].values:
+        print('Este DNI ya esta en uso, por favor, introduzca un DNI válido')
+        break
+    else:
+        nombre=input("Por favor, introduzca su nombre: \n")
+        apellidos = input("Por favor, introduzca sus apellidos:\n ")
+        edad = input("Por favor, introduzca su edad:\n ")
+        facturacion = input("¿Desea facturar maletas? (SI/NO): \n")
+        return dni, nombre, apellidos, edad, facturacion
 
 #Función que  muestra informacion de reservas
 def info_reservas(db,dr):
@@ -134,23 +139,36 @@ def info_reservas(db,dr):
         print(db)
     elif eleccion=='REGULAR':
         print(dr)
+    
 #Función que muestra informacion pasajeros
-#acabarla, queda que imprima como se especifica la info, y ordenar los asientos.
+#por mejorar: intentar aparte de ordenar segun el numero que ademas en orden de letras, 1A,1B,1C etc.
 def info_pasajeros(db,dr):
     eleccion=op_orden()
     if eleccion=='1':
         clase=op_clases()
         if clase=='BUSINESS':
             ordenado=db.sort_values(by="Apellidos")
-        
-            print(ordenado)
+            columnas=['Asiento','Apellidos','Nombre'] #para imprimir la informacion especificada
+            print(ordenado[columnas])
         elif clase=='REGULAR':
              ordenado=dr.sort_values(by="Apellidos")
-             print(ordenado)
+             columnas=['Asiento','Apellidos','Nombre']
+             print(ordenado[columnas])
     elif eleccion=='2':
         clase=op_clases()
         if clase=='BUSINESS':
-            print('ok')
+            db['Numeros']=db['Asiento'].apply(orden_num)
+            ordenado=db.sort_values(by='Numeros')#creo la columna con los numeros de los asientos y lo ordeno en funcion de ello
+            columnas=['Asiento','Apellidos','Nombre']
+            print(ordenado[columnas])
+            ordenado=ordenado.drop(columns=['Numeros']) #elimino la columna de numeros
+        elif clase=='REGULAR':
+            dr['Numeros']=dr['Asiento'].apply(orden_num)
+            ordenado=dr.sort_values(by='Numeros')
+            columnas=['Asiento','Apellidos','Nombre']
+            print(ordenado[columnas])
+            ordenado=ordenado.drop(columns=['Numeros']) 
+
 
 #Función que busca asientos disponibles
 def buscar_sitio(op_preferencia, sitios, asientos_reservados, op_clases):
@@ -173,14 +191,11 @@ def buscar_sitio(op_preferencia, sitios, asientos_reservados, op_clases):
             return asiento
 
     return None
-#Función para aisgnar el sitio y añadir la reserva
+#Función para asignar el sitio y añadir la reserva 
 def add_reserva(asiento,asientos_reservados):
     if asiento is not None:
-        eleccion=op_clases()
         asiento=buscar_sitio(op_preferencia, sitios, asientos_reservados, op_clases)
         asientos_reservados.append(asiento)
-        print(f'Asiento asigando{asiento}')
-
         #Extraer el numero de fila del asiento
         numero_asiento=re.findall(r'\d+', asiento)
         if numero_asiento:
@@ -201,18 +216,42 @@ def add_reserva(asiento,asientos_reservados):
         dt.loc[len(dt)]=fila
         #Guarda el DataFrame actaulizado en el archivo csv correspondiente
         dt.to_csv(csv_file,index=False)
+        #imprime en pantalla la nueva reserva
+        print('Reserva añadida con exito')
+        print(dt[dt['DNI']==dni])
     else:
         print('No hay asientos disponibles con sus preferencias')
 
 #Función para modificar el asiento
 
+#Funcion para eliminar una reserva
+#corregir que el csv lo modifica, pero lo que muestra en pantalla no es el csv actualizado
+def elim_reserva(db,dr):
+    clase=op_clases()
+    dni=input(str("Por favor, introduzca su DNI:\n"))
+    if clase=='BUSINESS':
+        db=db[db['DNI']!=dni]
+        db.to_csv('booked_business.csv',index=False)
+        print(f'Reserva del pasajero con DNI: {dni} ,eliminada correctamente\n')
+    elif clase=='REGULAR':
+        dr=dr[dr['DNI'!=dni]]
+        dr.to_csv('booked_regular.csv',index=False)
+        print(f'Reserva del pasajero con DNI: {dni} ,eliminada correctamente\n')
+    
 
 def menu():
-    seleccion=op_menu()
-    if seleccion=='1':
-        info_reservas(db,dr)
-    elif seleccion=='3':
-        add_reserva(asiento,asientos_reservados)
-    elif seleccion=='5':
-        print('0')
+    salir=False
+    while not salir:
+        seleccion=op_menu() 
+        if seleccion=='1':
+            info_reservas(db,dr) #completa
+        elif seleccion=='2':
+            info_pasajeros(db,dr) #completa
+        elif seleccion=='3':
+            add_reserva(asiento,asientos_reservados) #completa
+        elif seleccion=='5':
+            elim_reserva(dr,db) #completa mas menos
+        elif seleccion=='6':
+            salir=True
 
+menu()
