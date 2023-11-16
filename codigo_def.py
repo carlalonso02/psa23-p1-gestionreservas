@@ -7,7 +7,7 @@ dr= pd.read_csv('booked_regular.csv',skipinitialspace=True)
 dt=pd.concat([db,dr],ignore_index=True) 
 sitios=[f"{fila}{asientos}"for fila in range(1,21) for asientos in 'ABCDEF']
 asientos_reservados=dt['Asiento'].tolist()
- 
+
 print(' ')
 print('    A B C    D E F  ')
 print('==========================')
@@ -111,9 +111,9 @@ def op_preferencia():
     return preferencia
 
 #Funcion para ordenar segun numero asientos
-def orden_num(numero):
-    numero=re.findall(r'\d+',numero)
-    return int(numero[0]if numero else 0) #convierte lo encontrado a un integer, si la cadena esta vacia devuleve un cero.
+def orden_num(asiento):
+    numero=re.findall(r'\d+',asiento)
+    return int(numero[0])
 
 #Función que pide informacion al usuario para crear una nueva reserva
 #corregir fallo
@@ -121,10 +121,10 @@ def user_info(dt):
     print('Introduzca la información pedida en mayusculas')
     dni=input("Por favor, introduzca su DNI: \n")
     #Compruebo si el dni ya esta asociado a una reserva
-    for dni in dt['DNI'].values:
+    if dni in dt['DNI'].values:
         print('Este DNI ya esta en uso, por favor, introduzca un DNI válido')
-        break
-    else:
+        menu()
+    elif dni not in dt['DNI'].values:
         nombre=input("Por favor, introduzca su nombre: \n")
         apellidos = input("Por favor, introduzca sus apellidos:\n ")
         edad = input("Por favor, introduzca su edad:\n ")
@@ -171,9 +171,7 @@ def info_pasajeros(db,dr):
 
 
 #Función que busca asientos disponibles
-def buscar_sitio(op_preferencia, sitios, asientos_reservados, op_clases):
-    eleccion=op_clases()
-    preferencia=op_preferencia()
+def buscar_sitio(preferencia, sitios, asientos_reservados, eleccion):
     if eleccion=='BUSINESS':
         sitios=[ asiento for asiento in sitios if int(re.search(r'\d+', asiento).group()) <= 8] #condicion para los asientos de business
     elif eleccion=='REGULAR':
@@ -194,7 +192,9 @@ def buscar_sitio(op_preferencia, sitios, asientos_reservados, op_clases):
 #Función para asignar el sitio y añadir la reserva 
 def add_reserva(asiento,asientos_reservados):
     if asiento is not None:
-        asiento=buscar_sitio(op_preferencia, sitios, asientos_reservados, op_clases)
+        eleccion=op_clases() #hacer lo mismo en añadir
+        preferencia=op_preferencia()
+        asiento=buscar_sitio(preferencia, sitios, asientos_reservados, eleccion)
         asientos_reservados.append(asiento)
         #Extraer el numero de fila del asiento
         numero_asiento=re.findall(r'\d+', asiento)
@@ -221,11 +221,49 @@ def add_reserva(asiento,asientos_reservados):
         print(dt[dt['DNI']==dni])
     else:
         print('No hay asientos disponibles con sus preferencias')
+#Función que comprueba si el dni esta en uso o no
+def busca_dni(dt):
+    dni=input("Por favor, introduzca su DNI: \n")
+    #Convierte el DNI a la misma forma que en el DataFrame
+    buscar=str(dni)
+    encontrar=dt[dt['DNI']==buscar]
+    if encontrar.empty:
+        print(f'No se encontro el dni: {dni}')
+        return None
+    else:
+        print('DNI en el sistema')
+        return encontrar 
 
-#Función para modificar el asiento
+#Función para modificar el asientoH
+#mejorar funcionamiento
+def mod_reserva(sitios,asientos_reservados):
+    dni=input("Por favor, introduzca su DNI: \n")
+    eleccion=op_clases() #hacer lo mismo en añadir
+    preferencia=op_preferencia()
+    asiento=buscar_sitio(preferencia,sitios,asientos_reservados,eleccion)
+    if sitios is not None:
+        numero_sitio=orden_num(asiento)
+        if numero_sitio:
+            db_1=pd.read_csv('booked_business.csv',dtype={'DNI':str})
+            dr_1=pd.read_csv('booked_regular.csv',dtype={'DNI':str})
+
+            buscar_db=busca_dni(db_1)
+            buscar_dr=busca_dni(dr_1)
+
+            if buscar_db is not None:
+                db_1.loc[db_1['DNI']==str(dni),'Asiento'] = asiento
+                db_1.to_csv('booked_business.csv',index=False)
+                print('Esito')
+            elif buscar_dr is not None:
+                dr_1.loc[dr_1['DNI']==str(dni),'Asiento']=sitios
+                dr_1.to_csv('booked_regular.csv',index=False)
+                print('Esito')
+            else:
+                print(f'El DNI: {dni}, no se encuentra en el sistema')
+    else:
+        print('No hay asientos disponibles con sus preferencias')
 
 #Funcion para eliminar una reserva
-#corregir que el csv lo modifica, pero lo que muestra en pantalla no es el csv actualizado
 def elim_reserva(db,dr):
     clase=op_clases()
     dni=input(str("Por favor, introduzca su DNI:\n"))
@@ -237,7 +275,7 @@ def elim_reserva(db,dr):
         dr=dr[dr['DNI'!=dni]]
         dr.to_csv('booked_regular.csv',index=False)
         print(f'Reserva del pasajero con DNI: {dni} ,eliminada correctamente\n')
-    
+
 
 def menu():
     salir=False
@@ -249,9 +287,10 @@ def menu():
             info_pasajeros(db,dr) #completa
         elif seleccion=='3':
             add_reserva(asiento,asientos_reservados) #completa
+        elif seleccion=='4':
+            mod_reserva(sitios,asientos_reservados)
         elif seleccion=='5':
-            elim_reserva(dr,db) #completa mas menos
+            elim_reserva(dr,db) #completa 
         elif seleccion=='6':
             salir=True
-
 menu()
