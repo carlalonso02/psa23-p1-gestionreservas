@@ -15,5 +15,8 @@ La principal diferencia entre una función y un método es que la función traba
 Un constructor es un método que sirve para inicializar los atributos de forma automatica. El cosntructor tiene la siguiente llamada: __init__(). 
 
 Razone si un constructor en Python puede no tener parámetros.
-Explique las diferencias entre una lista y un diccionario en Python. Indique cómo se utilizarían estas estructuras de datos para almacenar los datos de las reservas en esta práctica.
+
+Explique las diferencias entre una lista y un diccionario en Python. I
+
+Para usar listas y diccionarios en esta practica, se podrian cargar  los datos de los archivos csv y guardarlos mediante clases y una lista de objetos de reserva. Despues con los diccionarios, creamos un diccioanrio para cada reserva, y despues en esa lista guaradamos los diccioanrios.
 
