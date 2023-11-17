@@ -147,7 +147,7 @@ def info_pasajeros(db,dr):
     elif eleccion=='2':
         clase=op_clases()
         if clase=='BUSINESS':
-            db['Numeros']=db['Asiento'].apply(orden_num)
+            db['Numeros']=db['Asiento'].apply(orden_num) #aplico la funcion solo en la columna 'Asiento'
             ordenado=db.sort_values(by='Numeros')#creo la columna con los numeros de los asientos y lo ordeno en funcion de ello
             columnas=['Asiento','Apellidos','Nombre']
             print(ordenado[columnas])
@@ -180,7 +180,7 @@ def buscar_sitio(preferencia, sitios, asientos_reservados, eleccion):
     return None
 
 #Función que pide informacion al usuario para crear una nueva reserva
-def user_info(dt):
+def info_usuario(dt):
     '''comprueba si el dni ya esta en uso y si no lo esta continua ejecuatando la funcion y pidiendo informacion al usuario'''
     print('Introduzca la información pedida en mayusculas')
     dni=input("Por favor, introduzca su DNI: \n")
@@ -199,7 +199,7 @@ def user_info(dt):
 def add_reserva(asiento,asientos_reservados):
     '''añade una nueva reserva'''
     if asiento is not None:
-        eleccion=op_clases() #hacer lo mismo en añadir
+        eleccion=op_clases() 
         preferencia=op_preferencia()
         asiento=buscar_sitio(preferencia, sitios, asientos_reservados, eleccion)
         asientos_reservados.append(asiento)
@@ -217,7 +217,7 @@ def add_reserva(asiento,asientos_reservados):
         #Lee el archcivo CSV existente en un DataFrame
         dt=pd.read_csv(csv_file) 
         #Añade los datos introduciods por el usuario a una nueva fila
-        dni,nombre,apellidos,edad,facturacion=user_info(dt)
+        dni,nombre,apellidos,edad,facturacion=info_usuario(dt)
         nueva_fila=[dni,nombre,apellidos,asiento,edad,facturacion]
         #Añade la fila al DataFrame
         dt.loc[len(dt)]=nueva_fila
