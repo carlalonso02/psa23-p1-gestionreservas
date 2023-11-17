@@ -1,5 +1,5 @@
 # psa23-p1-gestionreservas
-
+El archivo .py a corregir es 'codigo_def'
 # Funcionamiento de la practica
 Concepto de estructuras de datos y su uso en la práctica\\
 Concepto de prueba unitaria y su uso en la práctica
