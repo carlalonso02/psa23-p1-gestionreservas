@@ -218,9 +218,9 @@ def add_reserva(asiento,asientos_reservados):
         dt=pd.read_csv(csv_file) 
         #Añade los datos introduciods por el usuario a una nueva fila
         dni,nombre,apellidos,edad,facturacion=user_info(dt)
-        fila=[dni,nombre,apellidos,asiento,edad,facturacion]
+        nueva_fila=[dni,nombre,apellidos,asiento,edad,facturacion]
         #Añade la fila al DataFrame
-        dt.loc[len(dt)]=fila
+        dt.loc[len(dt)]=nueva_fila
         #Guarda el DataFrame actaulizado en el archivo csv correspondiente
         dt.to_csv(csv_file,index=False)
         #imprime en pantalla la nueva reserva
@@ -264,7 +264,7 @@ def mod_reserva(sitios,asientos_reservados):
                 db_1.to_csv('booked_business.csv',index=False)
                 print('Esito')
             elif buscar_dr is not None:
-                dr_1.loc[dr_1['DNI']==str(dni),'Asiento']=sitios
+                dr_1.loc[dr_1['DNI']==str(dni),'Asiento']= asiento
                 dr_1.to_csv('booked_regular.csv',index=False)
                 print('Esito')
             else:
@@ -281,14 +281,14 @@ def corregir():
     dr_r=pd.read_csv('booked_regular.csv', dtype={'DNI': str})
     #Verficia cada fila en el DataFrame business
     for index, fila in db_b.iterrows():
-        numero_asiento=int(re.findall(r'd\+',fila['Asiento'])[0])
+        numero_asiento=int(re.findall(r'\d+',fila[' Asiento'])[0])
         if numero_asiento>8:
             #Mueve la fila al DataFrame regular
             dr_r=pd.concat([dr_r,db_b.loc[index:index]])
             db_b=db_b.drop(index)
     #lo mismo pero en el dataframe regular
     for index, fila in dr_r.iterrows():
-        numero_asiento=int(re.findall(r'\d+',fila['Asiento'])[0])
+        numero_asiento=int(re.findall(r'\d+',fila[' Asiento'])[0])
         if numero_asiento<=8:
             db_b = pd.concat([db_b, dr_r.loc[index:index]])
             dr_r = dr_r.drop(index)
@@ -306,7 +306,7 @@ def elim_reserva(db,dr):
         db.to_csv('booked_business.csv',index=False)
         print(f'Reserva del pasajero con DNI: {dni} ,eliminada correctamente\n')
     elif clase=='REGULAR':
-        dr=dr[dr['DNI'!=dni]]
+        dr=dr[dr['DNI']!=dni]
         dr.to_csv('booked_regular.csv',index=False)
         print(f'Reserva del pasajero con DNI: {dni} ,eliminada correctamente\n')
 
