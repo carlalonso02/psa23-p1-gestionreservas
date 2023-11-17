@@ -273,7 +273,6 @@ def mod_reserva(sitios,asientos_reservados):
     else:
         print('No hay asientos disponibles con sus preferencias')
 
-#Como la funcion anterior provoca un fallo en los csv, crea una columna de mas, añado la siguiente funcion.
 #Funcion correctora
 def corregir():
     '''con esta funcion se corrigen efectos colaterales de la de añadir reserva y la de modificar asiento'''
