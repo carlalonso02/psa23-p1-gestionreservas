@@ -1,7 +1,8 @@
 # psa23-p1-gestionreservas
 
 # Funcionamiento de la practica
-
+Concepto de estructuras de datos y su uso en la práctica
+Concepto de prueba unitaria y su uso en la práctica
 # Cuestiones
 La programación orientada a objetos es un tipo de programación que trabajara con objetos, que son instancias de clases.
 Una clase es una forma de agrupar datos y acceder a ellos de forma sencilla. Tambien puede verse como una plantilla que usamos para la creacion de nuevos datos.
