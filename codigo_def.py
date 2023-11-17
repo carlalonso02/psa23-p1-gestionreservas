@@ -247,6 +247,7 @@ def busca_dni(dt):
 def mod_reserva(sitios,asientos_reservados):
     '''modifica la reserva'''
     dni=input("Por favor, introduzca su DNI: \n")
+    print('Introduzca la clase en la que se encuentra su reserva, en caso de que quiera cambiar de reserva debera eliminar la actual y crear una nueva.')
     eleccion=op_clases() #hacer lo mismo en añadir
     preferencia=op_preferencia()
     asiento=buscar_sitio(preferencia,sitios,asientos_reservados,eleccion)
@@ -262,11 +263,11 @@ def mod_reserva(sitios,asientos_reservados):
             if buscar_db is not None:
                 db_1.loc[db_1['DNI']==str(dni),'Asiento'] = asiento
                 db_1.to_csv('booked_business.csv',index=False)
-                print('Esito')
+                print('Asiento modificado correctamente')
             elif buscar_dr is not None:
                 dr_1.loc[dr_1['DNI']==str(dni),'Asiento']= asiento
                 dr_1.to_csv('booked_regular.csv',index=False)
-                print('Esito')
+                print('Asiento modificado correctamente')
             else:
                 print(f'El DNI: {dni}, no se encuentra en el sistema')
     else:
@@ -281,14 +282,14 @@ def corregir():
     dr_r=pd.read_csv('booked_regular.csv', dtype={'DNI': str})
     #Verficia cada fila en el DataFrame business
     for index, fila in db_b.iterrows():
-        numero_asiento=int(re.findall(r'\d+',fila[' Asiento'])[0])
+        numero_asiento=int(re.findall(r'\d+',fila['Asiento'])[0])
         if numero_asiento>8:
             #Mueve la fila al DataFrame regular
             dr_r=pd.concat([dr_r,db_b.loc[index:index]])
             db_b=db_b.drop(index)
     #lo mismo pero en el dataframe regular
     for index, fila in dr_r.iterrows():
-        numero_asiento=int(re.findall(r'\d+',fila[' Asiento'])[0])
+        numero_asiento=int(re.findall(r'\d+',fila['Asiento'])[0])
         if numero_asiento<=8:
             db_b = pd.concat([db_b, dr_r.loc[index:index]])
             dr_r = dr_r.drop(index)
@@ -316,17 +317,18 @@ def menu():
     while not salir:
         seleccion=op_menu() 
         if seleccion=='1':
-            info_reservas(db,dr) #completa
+            info_reservas(db,dr) 
         elif seleccion=='2':
-            info_pasajeros(db,dr) #completa
+            info_pasajeros(db,dr) 
         elif seleccion=='3':
-            add_reserva(asiento,asientos_reservados) #completa
+            add_reserva(asiento,asientos_reservados) 
             corregir()
         elif seleccion=='4':
             mod_reserva(sitios,asientos_reservados) 
             corregir()
         elif seleccion=='5':
-            elim_reserva(dr,db) #completa 
+            elim_reserva(dr,db) 
         elif seleccion=='6':
             salir=True
+            print('Hasta la vista :)')
 menu()
