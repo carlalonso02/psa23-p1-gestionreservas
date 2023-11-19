@@ -272,30 +272,7 @@ def mod_reserva(sitios,asientos_reservados):
                 print(f'El DNI: {dni}, no se encuentra en el sistema')
     else:
         print('No hay asientos disponibles con sus preferencias')
-
-#Funcion correctora
-def corregir():
-    '''con esta funcion se corrigen efectos colaterales de la de añadir reserva y la de modificar asiento'''
-    #Lee los dos archivos csv
-    db_b=pd.read_csv('booked_business.csv', dtype={'DNI': str})
-    dr_r=pd.read_csv('booked_regular.csv', dtype={'DNI': str})
-    #Verficia cada fila en el DataFrame business
-    for index, fila in db_b.iterrows():
-        numero_asiento=int(re.findall(r'\d+',fila['Asiento'])[0])
-        if numero_asiento>8:
-            #Mueve la fila al DataFrame regular
-            dr_r=pd.concat([dr_r,db_b.loc[index:index]])
-            db_b=db_b.drop(index)
-    #lo mismo pero en el dataframe regular
-    for index, fila in dr_r.iterrows():
-        numero_asiento=int(re.findall(r'\d+',fila['Asiento'])[0])
-        if numero_asiento<=8:
-            db_b = pd.concat([db_b, dr_r.loc[index:index]])
-            dr_r = dr_r.drop(index)
-    #guarda los dataframes corregidos en los csv
-    db_b.to_csv('booked_business.csv',index=False)
-    dr_r.to_csv('booked_regular.csv',index=False)
-
+    
 #Funcion para eliminar una reserva
 def elim_reserva(db,dr):
     '''elimina una reserva'''
@@ -310,6 +287,7 @@ def elim_reserva(db,dr):
         dr.to_csv('booked_regular.csv',index=False)
         print(f'Reserva del pasajero con DNI: {dni} ,eliminada correctamente\n')
 
+#Función que llama a todas las funciones y crea que el menu
 def menu():
     '''crea el menu que involura todas las funciones establecidas'''
     salir=False
@@ -321,13 +299,11 @@ def menu():
             info_pasajeros(db,dr) 
         elif seleccion=='3':
             add_reserva(asiento,asientos_reservados) 
-            corregir()
         elif seleccion=='4':
             mod_reserva(sitios,asientos_reservados) 
-            corregir()
         elif seleccion=='5':
             elim_reserva(dr,db) 
         elif seleccion=='6':
             salir=True
-            print('Hasta la vista :)')
+            print('Gracias por volar con nosotros ✈️')
 menu()
