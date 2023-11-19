@@ -1,5 +1,5 @@
 # psa23-p1-gestionreservas
-El archivo .py a corregir es la version 'evaluable' de 'codgio_def.py'
+El archivo a corregir es la version 'evaluable' de 'codgio_def.py'
 # Funcionamiento de la practica
 Para comenzar llamo a los dos csv, el de clase businness y el regular, (db, dr respectivamente).
 Para trabajar mas facilmente con la funciones, los uno en un solo dataframe, dt.
